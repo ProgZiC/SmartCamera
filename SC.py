@@ -11,7 +11,6 @@ def face_comparison(img_1,img_2):
         cv2.imwrite("q.png", img_1)
 def face_capture():
     cascade_path = 'haarcascade_frontalface_default.xml'
-    i=0
     clf = cv2.CascadeClassifier(cascade_path)
     camera = cv2.VideoCapture('V.mp4')
     
