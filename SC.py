@@ -1,9 +1,9 @@
 #!/usr/bin/python
 import cv2
-import dlib
+from deepface import DeepFace
 import argparse 
 import os
-import face_recognition
+
 import time
 parser = argparse.ArgumentParser(description='options')
 parser.add_argument(
@@ -22,15 +22,15 @@ namespace = parser.parse_args()
 
 
 def face_comparison(img_1,img_2):
-    
-    known_image = face_recognition.load_image_file("img_1.jpg")
-    unknown_image = face_recognition.load_image_file("img_2.jpg")
-
-    biden_encoding = face_recognition.face_encodings(known_image)[0]
-    unknown_encoding = face_recognition.face_encodings(unknown_image)[0]
-
-    results = face_recognition.compare_faces([biden_encoding], unknown_encoding)
-    return results
+    img1= cv2.imread(img_1)
+    img2= cv2.imread(img_2)
+    output = DeepFace.verify(img_1,img_2)
+    print(output)
+    verification = output['verified']
+    if verification:
+       return 1
+    else:
+       return 0
 def input_database_slow():
     db_dict={}
     path=os.getcwd()
@@ -79,7 +79,7 @@ def face_capture_with_s(k,url):
         )
         
         for (x, y, width, height) in faces:
-            cv2.rectangle(frame, (x, y), (x + width, y + height), (255, 255, 0), 2)
+            cv2.rectangle(frame, (x, y), (x + width, y + height), (255, 255, 0), 0)
             crop_img = frame[y:y+height, x:x+width]
             
             os.chdir(path+'\\Saved_frames')
